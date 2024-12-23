@@ -21,7 +21,7 @@ provider "aws" {
 
 resource "aws_security_group" "example" {
   name        = "dt-security-group"
-  description = "DT security group"
+  description = "DT security groups"
   vpc_id      = "vpc-06ddd4af58c50d08f"
 
   ingress {
