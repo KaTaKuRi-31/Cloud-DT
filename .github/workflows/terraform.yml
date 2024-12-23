@@ -25,27 +25,26 @@ jobs:
         AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
       run: echo "AWS credentials set"
 
-    - name: Terraform Validate
-      run: terraform validate
-
-    - name: Install TFLint
-      run: |
-        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-
-    - name: Run TFLint
-      run: tflint
-
+    # Initialisation de Terraform
     - name: Terraform Init
       run: terraform init
 
+    # Validation de la configuration Terraform
+    - name: Terraform Validate
+      run: terraform validate
+
+    # (Optionnel) Linting avec tflint
+    - name: Install TFLint
+      run: |
+        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+    - name: Run TFLint
+      run: tflint
+
+    # Création du plan Terraform
     - name: Terraform Plan
       run: terraform plan
 
-    - name: Require manual approval
-      uses: hmarr/auto-approve-action@v2
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-
+    # Application de la configuration Terraform
     - name: Terraform Apply
       if: github.event_name == 'push'
       run: terraform apply -auto-approve
